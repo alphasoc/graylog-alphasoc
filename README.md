@@ -11,6 +11,23 @@ This content pack establishes a GELF input by which AlphaSOC alerts can be sent 
 * A GELF input on TCP port 12201 to receive alerts from NFR
 * A dashboard which summarizes the alerts and suspicious domains
 
+## Sending NFR Events to Graylog
+
+To escalate AlphaSOC alerts from NFR via GELF you must define the Graylog server address within `config.yml` under the `outputs:` section, as below. NFR scores network traffic via the AlphaSOC Analytics Engine and escalates alerts to Graylog.
+
+```
+# Graylog server URI where AlphaSOC alerts will be sent in GELF format
+# The Network Behavior Analytics for Graylog content pack establishes
+# an input on TCP port 12201, which can be used to plug-and-play here.
+graylog:
+  # URI to the server (for example tcp://127.0.0.1:12201)
+  # Default: (none)
+  uri:
+  # Message level.
+  # Default: 1
+  level: 1
+```
+
 ## AlphaSOC Alert Format
 
 The alert format and fields within Graylog are described in the table below.
