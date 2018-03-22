@@ -13,7 +13,7 @@ This content pack establishes a GELF input by which AlphaSOC alerts can be sent 
 
 ## Sending NFR Events to Graylog
 
-To escalate AlphaSOC alerts from NFR via GELF you must define the Graylog server address within `config.yml` under the `outputs:` section, as below. NFR scores network traffic via the AlphaSOC Analytics Engine and escalates alerts to Graylog.
+To escalate AlphaSOC alerts from NFR via GELF you must define the Graylog server address within `config.yml` (under the `outputs:` section) as below. NFR scores network traffic via the AlphaSOC Analytics Engine and escalates alerts to Graylog.
 
 ```
 # Graylog server URI where AlphaSOC alerts will be sent in GELF format
