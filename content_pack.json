@@ -1,219 +1,883 @@
 {
-    "category": "AlphaSOC",
-    "inputs": [
-        {
-            "id": "5aabb9ac2ab79c0001bc7a83",
-            "title": "alphasoc-input",
-            "configuration": {
-                "bind_address": "0.0.0.0",
-                "decompress_size_limit": 8388608,
-                "max_message_size": 2097152,
-                "override_source": null,
-                "port": 12201,
-                "recv_buffer_size": 1048576,
-                "tcp_keepalive": false,
-                "tls_cert_file": "",
-                "tls_client_auth": "disabled",
-                "tls_client_auth_cert_file": "",
-                "tls_enable": false,
-                "tls_key_file": "",
-                "tls_key_password": "",
-                "use_null_delimiter": true
+  "v": 1,
+  "id": "f8e4020c-f444-453c-a9f6-d59ccf9c929e",
+  "rev": 1,
+  "name": "Network Behavior Analytics for Graylog",
+  "summary": "AlphaSOC processes network telemetry to flag anomalies. This dashboard shows alerts generated over 24 hours",
+  "description": "This content pack establishes a GELF input by which AlphaSOC alerts can be sent to Graylog by Network Flight Recorder (NFR), and a dashboard to summarize infected hosts and anomalies within the environment. NFR performs scoring of network traffic (DNS and IP events) which can be collected on the wire, or loaded via Bro IDS, Suricata, or other sources.\n",
+  "vendor": "AlphaSOC",
+  "url": "https://alphasoc.com",
+  "parameters": [
+    {
+      "name": "alphasoc_gelf_input_port",
+      "title": "GELF Input Port",
+      "description": "GELF input port for AlphaSOC alerts",
+      "type": "integer",
+      "default_value": 12201
+    }
+  ],
+  "entities": [
+    {
+      "v": "1",
+      "type": {
+        "name": "stream",
+        "version": "1"
+      },
+      "id": "21e389fc-09a5-41d9-88b1-c36b412e6deb",
+      "data": {
+        "alarm_callbacks": [],
+        "outputs": [],
+        "remove_matches": {
+          "@type": "boolean",
+          "@value": true
+        },
+        "title": {
+          "@type": "string",
+          "@value": "AlphaSOC"
+        },
+        "stream_rules": [
+          {
+            "type": {
+              "@type": "string",
+              "@value": "REGEX"
             },
-            "extractors": [],
-            "global": false,
-            "static_fields": {},
-            "type": "org.graylog2.inputs.gelf.tcp.GELFTCPInput"
+            "field": {
+              "@type": "string",
+              "@value": "engine_agent"
+            },
+            "value": {
+              "@type": "string",
+              "@value": "^AlphaSOC NFR"
+            },
+            "inverted": {
+              "@type": "boolean",
+              "@value": false
+            },
+            "description": {
+              "@type": "string",
+              "@value": ""
+            }
+          }
+        ],
+        "alert_conditions": [],
+        "matching_type": {
+          "@type": "string",
+          "@value": "AND"
+        },
+        "disabled": {
+          "@type": "boolean",
+          "@value": false
+        },
+        "description": {
+          "@type": "string",
+          "@value": "AlphaSOC alerts retrieved by Network Flight Recorder"
+        },
+        "default_stream": {
+          "@type": "boolean",
+          "@value": false
         }
-    ],
-    "dashboards": [
+      },
+      "constraints": [
         {
-            "dashboard_widgets": [
-                {
-                    "cache_time": 10,
-                    "col": 1,
-                    "configuration": {
-                        "lower_is_better": true,
-                        "query": "(severity:>=4)",
-                        "timerange": {
-                            "range": 86400,
-                            "type": "relative"
-                        },
-                        "trend": true
-                    },
-                    "description": "High Severity Events",
-                    "height": 1,
-                    "row": 1,
-                    "type": "SEARCH_RESULT_COUNT",
-                    "width": 2
-                },
-                {
-                    "cache_time": 10,
-                    "col": 3,
-                    "configuration": {
-                        "lower_is_better": true,
-                        "query": "(severity:<=3)",
-                        "timerange": {
-                            "range": 86400,
-                            "type": "relative"
-                        },
-                        "trend": true
-                    },
-                    "description": "Other Events",
-                    "height": 1,
-                    "row": 1,
-                    "type": "SEARCH_RESULT_COUNT",
-                    "width": 2
-                },
-                {
-                    "cache_time": 10,
-                    "col": 1,
-                    "configuration": {
-                        "data_table_limit": 8,
-                        "field": "src_ip",
-                        "limit": 8,
-                        "query": "severity:>=4",
-                        "show_data_table": true,
-                        "show_pie_chart": false,
-                        "sort_order": "desc",
-                        "stacked_fields": "",
-                        "timerange": {
-                            "range": 86400,
-                            "type": "relative"
-                        }
-                    },
-                    "description": "High Severity Sources",
-                    "height": 2,
-                    "row": 2,
-                    "type": "QUICKVALUES",
-                    "width": 1
-                },
-                {
-                    "cache_time": 10,
-                    "col": 2,
-                    "configuration": {
-                        "data_table_limit": 8,
-                        "field": "threat",
-                        "limit": 8,
-                        "query": "severity:>=4",
-                        "show_data_table": true,
-                        "show_pie_chart": false,
-                        "sort_order": "desc",
-                        "stacked_fields": "",
-                        "timerange": {
-                            "range": 86400,
-                            "type": "relative"
-                        }
-                    },
-                    "description": "High Severity Threats",
-                    "height": 2,
-                    "row": 2,
-                    "type": "QUICKVALUES",
-                    "width": 1
-                },
-                {
-                    "cache_time": 10,
-                    "col": 3,
-                    "configuration": {
-                        "data_table_limit": 8,
-                        "field": "query",
-                        "limit": 8,
-                        "query": "severity:>=4",
-                        "show_data_table": true,
-                        "show_pie_chart": false,
-                        "sort_order": "desc",
-                        "stacked_fields": "flags",
-                        "timerange": {
-                            "range": 86400,
-                            "type": "relative"
-                        }
-                    },
-                    "description": "High Severity Domains",
-                    "height": 2,
-                    "row": 2,
-                    "type": "QUICKVALUES",
-                    "width": 2
-                },
-                {
-                    "cache_time": 10,
-                    "col": 1,
-                    "configuration": {
-                        "data_table_limit": 8,
-                        "field": "src_ip",
-                        "limit": 8,
-                        "query": "severity:<=3",
-                        "show_data_table": true,
-                        "show_pie_chart": false,
-                        "sort_order": "desc",
-                        "stacked_fields": "",
-                        "timerange": {
-                            "range": 86400,
-                            "type": "relative"
-                        }
-                    },
-                    "description": "Other Sources",
-                    "height": 2,
-                    "row": 4,
-                    "type": "QUICKVALUES",
-                    "width": 1
-                },
-                {
-                    "cache_time": 10,
-                    "col": 2,
-                    "configuration": {
-                        "data_table_limit": 8,
-                        "field": "threat",
-                        "limit": 8,
-                        "query": "severity:<=3",
-                        "show_data_table": true,
-                        "show_pie_chart": false,
-                        "sort_order": "desc",
-                        "stacked_fields": "",
-                        "timerange": {
-                            "range": 86400,
-                            "type": "relative"
-                        }
-                    },
-                    "description": "Other Threats",
-                    "height": 2,
-                    "row": 4,
-                    "type": "QUICKVALUES",
-                    "width": 1
-                },
-                {
-                    "cache_time": 10,
-                    "col": 3,
-                    "configuration": {
-                        "data_table_limit": 8,
-                        "field": "query",
-                        "limit": 8,
-                        "query": "severity:<=3",
-                        "show_data_table": true,
-                        "show_pie_chart": false,
-                        "sort_order": "desc",
-                        "stacked_fields": "flags",
-                        "timerange": {
-                            "range": 86400,
-                            "type": "relative"
-                        }
-                    },
-                    "description": "Other Suspicious Domains",
-                    "height": 2,
-                    "row": 4,
-                    "type": "QUICKVALUES",
-                    "width": 2
-                }
-            ],
-            "description": "AlphaSOC processes DNS and IP traffic to flag anomalies. This dashboard shows the alerts generated over the last 24 hours.",
-            "title": "Network Behavior Analytics for Graylog"
+          "type": "server-version",
+          "version": ">=3.0.0"
         }
-    ],
-    "description": "Use this content pack with [Network Flight Recorder](https://github.com/alphasoc/nfr) to score your network traffic and uncover threats including infected hosts, ransomware, DGA traffic, and data exfiltration via DNS tunneling.",
-    "grok_patterns": [],
-    "lookup_caches": [],
-    "lookup_data_adapters": [],
-    "lookup_tables": [],
-    "name": "Network Behavior Analytics for Graylog",
-    "outputs": [],
-    "streams": []
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "dashboard",
+        "version": "2"
+      },
+      "id": "d3f83ed0-1bee-4a98-acad-0d72c5819bd3",
+      "data": {
+        "summary": {
+          "@type": "string",
+          "@value": "Network Behavior Analytics for Graylog"
+        },
+        "search": {
+          "queries": [
+            {
+              "id": "a6ee99df-3a16-4ca2-b503-82521550f73e",
+              "timerange": {
+                "type": "relative",
+                "range": 300
+              },
+              "query": {
+                "type": "elasticsearch",
+                "query_string": ""
+              },
+              "search_types": [
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": ""
+                  },
+                  "name": null,
+                  "timerange": {
+                    "type": "relative",
+                    "range": 86400
+                  },
+                  "offset": 0,
+                  "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                  "filter": null,
+                  "decorators": [],
+                  "type": "messages",
+                  "id": "7c27f7a9-d943-49bb-94ed-b03c611b3bad",
+                  "limit": 150
+                }
+              ]
+            },
+            {
+              "id": "2630bbd7-804b-4561-a0bc-972531d72024",
+              "timerange": {
+                "type": "relative",
+                "range": 300
+              },
+              "query": {
+                "type": "elasticsearch",
+                "query_string": ""
+              },
+              "search_types": [
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "(severity:<4)"
+                  },
+                  "name": "trend",
+                  "timerange": {
+                    "type": "offset",
+                    "source": "search_type",
+                    "id": "d3dd876c-007a-42f3-bcf3-779aec9092d8",
+                    "offset": "1i"
+                  },
+                  "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "count(original_event)",
+                      "field": "original_event"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "id": "88dd6a55-3462-4c65-ad4c-19c2c8c72e82",
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "(severity:>=4)"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "type": "relative",
+                    "range": 86400
+                  },
+                  "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "events",
+                      "field": "original_event"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "field": "src_ip",
+                      "limit": 15
+                    },
+                    {
+                      "type": "values",
+                      "field": "threat",
+                      "limit": 15
+                    },
+                    {
+                      "type": "values",
+                      "field": "severity",
+                      "limit": 15
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "04ae4c01-4d23-4f0a-9ded-f08e43c716f3",
+                  "column_groups": [],
+                  "sort": [
+                    {
+                      "type": "pivot",
+                      "field": "severity",
+                      "direction": "Descending"
+                    }
+                  ]
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": ""
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "type": "relative",
+                    "range": 86400
+                  },
+                  "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "total",
+                      "field": null
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "time",
+                      "field": "timestamp",
+                      "interval": {
+                        "type": "auto",
+                        "scaling": 1
+                      }
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "f5331743-9de3-4afc-891a-112b3fb8b83f",
+                  "column_groups": [
+                    {
+                      "type": "values",
+                      "field": "severity",
+                      "limit": 15
+                    }
+                  ],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "(severity:<4)"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "type": "relative",
+                    "range": 86400
+                  },
+                  "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "count(original_event)",
+                      "field": "original_event"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "id": "d3dd876c-007a-42f3-bcf3-779aec9092d8",
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "(severity:>=4)"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "type": "relative",
+                    "range": 86400
+                  },
+                  "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "count(original_event)",
+                      "field": "original_event"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "id": "63b22308-fcc6-4236-bded-c62ef008dcd6",
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "(severity:>=4)"
+                  },
+                  "name": "trend",
+                  "timerange": {
+                    "type": "offset",
+                    "source": "search_type",
+                    "id": "63b22308-fcc6-4236-bded-c62ef008dcd6",
+                    "offset": "1i"
+                  },
+                  "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "count(original_event)",
+                      "field": "original_event"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [],
+                  "type": "pivot",
+                  "id": "bc31b1d7-d76e-4b40-96fb-cb9dabf24d67",
+                  "column_groups": [],
+                  "sort": []
+                },
+                {
+                  "query": {
+                    "type": "elasticsearch",
+                    "query_string": "(severity:<4)"
+                  },
+                  "name": "chart",
+                  "timerange": {
+                    "type": "relative",
+                    "range": 86400
+                  },
+                  "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                  "series": [
+                    {
+                      "type": "count",
+                      "id": "events",
+                      "field": "original_event"
+                    }
+                  ],
+                  "filter": null,
+                  "rollup": true,
+                  "row_groups": [
+                    {
+                      "type": "values",
+                      "field": "src_ip",
+                      "limit": 15
+                    },
+                    {
+                      "type": "values",
+                      "field": "threat",
+                      "limit": 15
+                    },
+                    {
+                      "type": "values",
+                      "field": "severity",
+                      "limit": 15
+                    }
+                  ],
+                  "type": "pivot",
+                  "id": "6548dd4c-a0f4-429a-a8c6-6014843b8d68",
+                  "column_groups": [],
+                  "sort": [
+                    {
+                      "type": "pivot",
+                      "field": "severity",
+                      "direction": "Descending"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "parameters": [],
+          "requires": {},
+          "owner": "admin",
+          "created_at": "2021-04-09T10:56:51.474Z"
+        },
+        "created_at": "2021-04-09T10:07:14.934Z",
+        "requires": {},
+        "state": {
+          "2630bbd7-804b-4561-a0bc-972531d72024": {
+            "selected_fields": null,
+            "static_message_list_id": null,
+            "titles": {
+              "widget": {
+                "023d0ae8-2523-4bf6-8899-1339c6fa3c86": "High severity sources",
+                "e54f3943-3ccb-4114-aed1-2e23ddcdcf17": "High severity events",
+                "aa8b1098-1521-4998-8237-46a2b4281552": "Other events",
+                "13a65141-9226-4f3c-b355-8b810c574fac": "Messages for threat:c2_communication AND src_ip:10.36.86.38",
+                "b39df0f1-49ad-421b-b427-191863f04039": "Event count",
+                "724c6bab-bfa1-43fe-8813-9d858a54ca7f": "Lower severity sources"
+              },
+              "tab": {
+                "title": "Threat Hunter"
+              }
+            },
+            "widgets": [
+              {
+                "id": "e54f3943-3ccb-4114-aed1-2e23ddcdcf17",
+                "type": "aggregation",
+                "filter": null,
+                "timerange": {
+                  "type": "relative",
+                  "range": 86400
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "(severity:>=4)"
+                },
+                "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                "config": {
+                  "visualization": "numeric",
+                  "event_annotation": false,
+                  "row_pivots": [],
+                  "series": [
+                    {
+                      "config": {
+                        "name": null
+                      },
+                      "function": "count(original_event)"
+                    }
+                  ],
+                  "rollup": true,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "trend": true,
+                    "trend_preference": "NEUTRAL"
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              },
+              {
+                "id": "b39df0f1-49ad-421b-b427-191863f04039",
+                "type": "aggregation",
+                "filter": null,
+                "timerange": {
+                  "type": "relative",
+                  "range": 86400
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": ""
+                },
+                "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                "config": {
+                  "visualization": "bar",
+                  "event_annotation": false,
+                  "row_pivots": [
+                    {
+                      "field": "timestamp",
+                      "type": "time",
+                      "config": {
+                        "interval": {
+                          "type": "auto",
+                          "scaling": null
+                        }
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "total"
+                      },
+                      "function": "count()"
+                    }
+                  ],
+                  "rollup": true,
+                  "column_pivots": [
+                    {
+                      "field": "severity",
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    }
+                  ],
+                  "visualization_config": {
+                    "barmode": "stack"
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              },
+              {
+                "id": "aa8b1098-1521-4998-8237-46a2b4281552",
+                "type": "aggregation",
+                "filter": null,
+                "timerange": {
+                  "type": "relative",
+                  "range": 86400
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "(severity:<4)"
+                },
+                "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                "config": {
+                  "visualization": "numeric",
+                  "event_annotation": false,
+                  "row_pivots": [],
+                  "series": [
+                    {
+                      "config": {
+                        "name": null
+                      },
+                      "function": "count(original_event)"
+                    }
+                  ],
+                  "rollup": true,
+                  "column_pivots": [],
+                  "visualization_config": {
+                    "trend": true,
+                    "trend_preference": "NEUTRAL"
+                  },
+                  "formatting_settings": null,
+                  "sort": []
+                }
+              },
+              {
+                "id": "023d0ae8-2523-4bf6-8899-1339c6fa3c86",
+                "type": "aggregation",
+                "filter": null,
+                "timerange": {
+                  "type": "relative",
+                  "range": 86400
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "(severity:>=4)"
+                },
+                "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                "config": {
+                  "visualization": "table",
+                  "event_annotation": false,
+                  "row_pivots": [
+                    {
+                      "field": "src_ip",
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    },
+                    {
+                      "field": "threat",
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    },
+                    {
+                      "field": "severity",
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "events"
+                      },
+                      "function": "count(original_event)"
+                    }
+                  ],
+                  "rollup": true,
+                  "column_pivots": [],
+                  "visualization_config": null,
+                  "formatting_settings": null,
+                  "sort": [
+                    {
+                      "type": "pivot",
+                      "field": "severity",
+                      "direction": "Descending"
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "724c6bab-bfa1-43fe-8813-9d858a54ca7f",
+                "type": "aggregation",
+                "filter": null,
+                "timerange": {
+                  "type": "relative",
+                  "range": 86400
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": "(severity:<4)"
+                },
+                "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                "config": {
+                  "visualization": "table",
+                  "event_annotation": false,
+                  "row_pivots": [
+                    {
+                      "field": "src_ip",
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    },
+                    {
+                      "field": "threat",
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    },
+                    {
+                      "field": "severity",
+                      "type": "values",
+                      "config": {
+                        "limit": 15
+                      }
+                    }
+                  ],
+                  "series": [
+                    {
+                      "config": {
+                        "name": "events"
+                      },
+                      "function": "count(original_event)"
+                    }
+                  ],
+                  "rollup": true,
+                  "column_pivots": [],
+                  "visualization_config": null,
+                  "formatting_settings": null,
+                  "sort": [
+                    {
+                      "type": "pivot",
+                      "field": "severity",
+                      "direction": "Descending"
+                    }
+                  ]
+                }
+              }
+            ],
+            "widget_mapping": {
+              "023d0ae8-2523-4bf6-8899-1339c6fa3c86": [
+                "04ae4c01-4d23-4f0a-9ded-f08e43c716f3"
+              ],
+              "724c6bab-bfa1-43fe-8813-9d858a54ca7f": [
+                "6548dd4c-a0f4-429a-a8c6-6014843b8d68"
+              ],
+              "b39df0f1-49ad-421b-b427-191863f04039": [
+                "f5331743-9de3-4afc-891a-112b3fb8b83f"
+              ],
+              "e54f3943-3ccb-4114-aed1-2e23ddcdcf17": [
+                "bc31b1d7-d76e-4b40-96fb-cb9dabf24d67",
+                "63b22308-fcc6-4236-bded-c62ef008dcd6"
+              ],
+              "aa8b1098-1521-4998-8237-46a2b4281552": [
+                "d3dd876c-007a-42f3-bcf3-779aec9092d8",
+                "88dd6a55-3462-4c65-ad4c-19c2c8c72e82"
+              ]
+            },
+            "positions": {
+              "023d0ae8-2523-4bf6-8899-1339c6fa3c86": {
+                "col": 1,
+                "row": 8,
+                "height": 4,
+                "width": 6
+              },
+              "724c6bab-bfa1-43fe-8813-9d858a54ca7f": {
+                "col": 7,
+                "row": 8,
+                "height": 4,
+                "width": 6
+              },
+              "b39df0f1-49ad-421b-b427-191863f04039": {
+                "col": 9,
+                "row": 5,
+                "height": 3,
+                "width": 4
+              },
+              "e54f3943-3ccb-4114-aed1-2e23ddcdcf17": {
+                "col": 1,
+                "row": 5,
+                "height": 3,
+                "width": 4
+              },
+              "aa8b1098-1521-4998-8237-46a2b4281552": {
+                "col": 5,
+                "row": 5,
+                "height": 3,
+                "width": 4
+              }
+            },
+            "formatting": {
+              "highlighting": []
+            },
+            "display_mode_settings": {
+              "positions": {}
+            }
+          },
+          "a6ee99df-3a16-4ca2-b503-82521550f73e": {
+            "selected_fields": null,
+            "static_message_list_id": null,
+            "titles": {
+              "tab": {
+                "title": "Alert Stream"
+              }
+            },
+            "widgets": [
+              {
+                "id": "8eaff81c-e46a-4755-bd22-f91a8d6bbc6a",
+                "type": "messages",
+                "filter": null,
+                "timerange": {
+                  "type": "relative",
+                  "range": 86400
+                },
+                "query": {
+                  "type": "elasticsearch",
+                  "query_string": ""
+                },
+                "streams": ["21e389fc-09a5-41d9-88b1-c36b412e6deb"],
+                "config": {
+                  "fields": ["timestamp", "src_ip", "severity"],
+                  "show_message_row": true,
+                  "decorators": [],
+                  "sort": [
+                    {
+                      "type": "pivot",
+                      "field": "timestamp",
+                      "direction": "Descending"
+                    }
+                  ]
+                }
+              }
+            ],
+            "widget_mapping": {
+              "8eaff81c-e46a-4755-bd22-f91a8d6bbc6a": [
+                "7c27f7a9-d943-49bb-94ed-b03c611b3bad"
+              ]
+            },
+            "positions": {
+              "8eaff81c-e46a-4755-bd22-f91a8d6bbc6a": {
+                "col": 1,
+                "row": 2,
+                "height": 5,
+                "width": "Infinity"
+              }
+            },
+            "formatting": {
+              "highlighting": []
+            },
+            "display_mode_settings": {
+              "positions": {}
+            }
+          }
+        },
+        "properties": [],
+        "owner": "admin",
+        "title": {
+          "@type": "string",
+          "@value": "AlphaSOC Alerts"
+        },
+        "type": "DASHBOARD",
+        "description": {
+          "@type": "string",
+          "@value": "AlphaSOC processes network traffic to flag anomalies. This dashboard shows the alerts generated over the last 24 hours."
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=4.0.6+40b7be5"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "input",
+        "version": "1"
+      },
+      "id": "04de8f09-36ed-41d2-b86e-8d730881df24",
+      "data": {
+        "title": {
+          "@type": "string",
+          "@value": "AlphaSOC Alerts"
+        },
+        "configuration": {
+          "tls_key_file": {
+            "@type": "string",
+            "@value": ""
+          },
+          "port": {
+            "@type": "integer",
+            "@value": 12201
+          },
+          "tls_enable": {
+            "@type": "boolean",
+            "@value": false
+          },
+          "use_null_delimiter": {
+            "@type": "boolean",
+            "@value": true
+          },
+          "recv_buffer_size": {
+            "@type": "integer",
+            "@value": 1048576
+          },
+          "tcp_keepalive": {
+            "@type": "boolean",
+            "@value": false
+          },
+          "tls_client_auth_cert_file": {
+            "@type": "string",
+            "@value": ""
+          },
+          "bind_address": {
+            "@type": "string",
+            "@value": "0.0.0.0"
+          },
+          "tls_cert_file": {
+            "@type": "string",
+            "@value": ""
+          },
+          "max_message_size": {
+            "@type": "integer",
+            "@value": 2097152
+          },
+          "tls_client_auth": {
+            "@type": "string",
+            "@value": "disabled"
+          },
+          "decompress_size_limit": {
+            "@type": "integer",
+            "@value": 8388608
+          },
+          "number_worker_threads": {
+            "@type": "integer",
+            "@value": 2
+          },
+          "tls_key_password": {
+            "@type": "string",
+            "@value": ""
+          }
+        },
+        "static_fields": {},
+        "type": {
+          "@type": "string",
+          "@value": "org.graylog2.inputs.gelf.tcp.GELFTCPInput"
+        },
+        "global": {
+          "@type": "boolean",
+          "@value": false
+        },
+        "extractors": []
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=3.0.0"
+        }
+      ]
+    }
+  ]
 }
