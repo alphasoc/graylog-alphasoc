@@ -51,4 +51,4 @@ The alert format and fields within Graylog are described in the table below.
 
 ## Contributors
 
-- Chris D'Amore
+- Chris D'Amore at Yellow Dog Networks
