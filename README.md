@@ -4,11 +4,14 @@ This content pack establishes a GELF input by which AlphaSOC alerts can be sent 
 
 ## Screenshot
 
-![AlphaSOC dashboard](https://github.com/alphasoc/graylog-alphasoc/blob/master/dashboard.png)
+![Threat Hunter](./dashboard-01.png)
+
+![Alert stream](./dashboard-02.png)
 
 ## Provided Content
 
-* A GELF input on TCP port 12201 to receive alerts from NFR
+* A TCP GELF input receive alerts from NFR (default port: 12201)
+* A stream that matches NFR events
 * A dashboard which summarizes the alerts and suspicious domains
 
 ## Sending NFR Events to Graylog
@@ -35,12 +38,17 @@ The alert format and fields within Graylog are described in the table below.
 | Field            | Description                                                              |
 |------------------|--------------------------------------------------------------------------|
 | `host`           | NFR engine generating the alert                                          |
-| `engine_agent`   | NFR engine version                                                       |
+| `engine_agent`   | NFR engine version (e.g. `Alphasoc NFR/1.9.0`)                           |
 | `original_event` | Timestamp of the original network event (e.g. DNS request)               |
 | `src_ip`         | IP address of the client / endpoint generating the traffic               |
 | `dest_ip`        | IP address of a suspicious destination                                   |
 | `threat`         | Short threat label (e.g. c2_communication)                               |
 | `message`        | Long threat label (e.g. "C2 communication attempt indicating infection") |
 | `severity`       | Event severity (5: critical, 4: high, 3: medium, 2: low, 1: info)        |
+| `flags` | A list of [low-level flags](https://docs.alphasoc.com/ae/flags/) used within AE to generate alerts and categorize traffic |
 | `query`          | DNS request FQDN associated with the alert (e.g. badguy123.ru)           |
 | `record_type`    | DNS request record type associated with the alert (e.g. A, MX, SRV)      |
+
+## Contributors
+
+- Chris D'Amore at Yellow Dog Networks
